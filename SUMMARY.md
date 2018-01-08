@@ -6,3 +6,5 @@
   * [3. 编写测试](3.writingTests.md)
   * [4. 运行测试](4.runningTests.md)
   * [5. 扩展模式](5.extensionModel.md)
+  * [6. 从JUnit 4迁移](6.migratingFromJUnit4.md)
+  * [7. 高级主题](7.advancedTopics.md)
