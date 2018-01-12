@@ -184,18 +184,18 @@ JUnit Jupiter 支持下面的注解来配置测试和扩展框架。
 
 方法被 `@Test`, `@TestTemplate`, `@RepeatedTest`, `@BeforeAll`, `@AfterAll`, `@BeforeEach`, 或 `@AfterEach` 注解了都不能有返回值，都应该是 public void XXX(args... ){ ... } 这样的方法 。
 
-|  |  |
-| ------------------ | ---------------------------------------- |
-| ![警告](wran.png "警告")  | 有些注解目前可能是实验性的。有关详细信息，请参阅实[验性api](#ExperimentalAPIs)中的表。 |
+|                      |                                          |
+| -------------------- | ---------------------------------------- |
+| ![警告](wran.png "警告") | 有些注解目前可能是实验性的。有关详细信息，请参阅实[验性api](#ExperimentalAPIs)中的表。 |
 
 
-#### 3.1.1 元注解，组合注解
+#### 3.1.1 元注解和组合注解
 
-JUnit Jupiter注解可以用作元注解。这意味着您可以定义自己的组合注解，它将自动继承其元注解的语义。
+JUnit Jupiter注解可以用作*元注解*。这意味着您可以定义自己的*组合注解*，它将自动*继承*其元注解的语义。
 
-例如，在您的代码库中(参见[Tagging and Filtering](http://junit.org/junit5/docs/current/user-guide/#writing-tests-tagging-and-filtering)(标签和过滤))，您可以创建一个名为@fast的自定义组合注解，而不是复制和粘贴@tag("fast")。如下所示，@fast可以被用作替代@tag("fast")。
+例如，在您的代码库中(参见[Tagging and Filtering](#TaggingAndFiltering)(标签和过滤))，您可以创建一个名为 `@Fast` 的自定义组合注解，而不是复制和粘贴 `@Tag("fast")` 。如下所示， `@Fast` 可以被用作替代 `@Tag("fast")`。
 
-```
+```java
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -214,7 +214,7 @@ public @interface Fast {
 
 *一个标准的测试用例*
 
-```
+```java
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
@@ -262,11 +262,11 @@ class StandardTests {
 
 ![警告](wran.png "警告")   | 测试类和测试方法都不需要写public(默认就是public的)。
 
-### 3.3. DisplayName(显示名称)
+### 3.3. 显示名称（DisplayName）
 
-测试类和测试方法可以声明自定义DisplayName(显示名称)——有空格、特殊字符，甚至是表情符号——这些都将由测试者和测试报告显示出来。
+测试类和测试方法可以声明自定义DisplayName（显示名称）。**“空格、特殊字符，甚至是表情符号”**这些都可以在测试运行器和测试报告显示出来，如下所示。
 
-```
+```java
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -293,9 +293,9 @@ class DisplayNameDemo {
 
 ### 3.4. 断言（Assertions）
 
-JUnit Jupiter 附带了许多JUnit 4所拥有的断言方法，并添加了一些可以很好地使用Java 8 lambdas的方法。所有的JUnit Jupiter断言都是在 org.junit.jupiter.Assertions (断言类)中的静态方法。
+JUnit Jupiter 附带了许多JUnit 4所拥有的断言方法，并添加了一些可以很好地使用Java 8 lambdas的方法。所有的JUnit Jupiter断言都是在`org.junit.jupiter.Assertions`  (断言类)中的静态方法。
 
-```
+```java
 import static java.time.Duration.ofMillis;
 import static java.time.Duration.ofMinutes;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -518,7 +518,7 @@ class DisabledTestsDemo {
 }
 ```
 
-### 3.7. 标签和过滤（Tagging and Filtering）
+### 3.7. 标签和过滤（Tagging and Filtering）{#TaggingAndFiltering}
 
 可以对测试类和方法进行标记。这些标记稍后可以用于筛选 [test discovery and execution](http://junit.org/junit5/docs/current/user-guide/#running-tests)（测试发现和执行）。
 
