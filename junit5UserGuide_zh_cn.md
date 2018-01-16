@@ -4,10 +4,11 @@
 
 <h1 align="center"> Junit5 User Guide Chinese document </h1>
 
+<h3 align="center"> 版本 5.0.3 </h3>
 
-<h3 align="center"> 版本 5.0.2 </h3>
+<h3 align="center"> JUnit 5.0.3 = Platform 1.0.3 + Jupiter 5.0.3 + Vintage 4.12.3 </h3>
 
-<h3 > 根据英文原版[JUnit 5 User Guide](http://junit.org/junit5/docs/current/user-guide/)的内容编写，适当加入了点自己的理解  </h3>
+<h3 > 根据英文原版[JUnit 5 User Guide](http://junit.org/junit5/docs/current/user-guide/)的内容编写，适当加入了点自己的理解（可以让你更容易理解）  </h3>
 
 <h3 > 感谢英文版作者 Stefan Bechtold、Sam Brannen、Johannes Link、Matthias Merdes、Marc Philipp、Christian Stein 的辛劳付出  </h3>
 
@@ -59,43 +60,43 @@ JUnit 5在运行时需要Java 8\(或更高版本\)。但是，您仍然可以用
 
 - **Group ID:**  `org.junit.platform`
 
-- **Version:**  `1.0.2`
+- **Version:**  `1.0.3`
 
 - **Artifact IDs: **
 
   `junit-platform-commons`
 
-    JUnit的内部公共库/实用程序。这些实用程序仅供JUnit框架本身使用。不支持外部的使用。不承担外部使用风险!
+    JUnit的内部公共库（library）/实用程序（utilities）。这些实用程序仅供JUnit框架本身使用。不支持外部的使用。不承担外部使用风险!
 
   `junit-platform-console`
-    支持从控制台发现和执行JUnit Platform上的测试。有关详细信息，请参见 [控制台启动程序](http://junit.org/junit5/docs/current/user-guide/#running-tests-console-launcher)。
+    支持从控制台发现和执行JUnit Platform上的测试。有关详细信息，请参见 [控制台启动程序](#ConsoleLauncher)。
 
   `junit-platform-console-standalone`
-    [junit-platform-console-standalone](https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone) 在Maven仓库包含所有依赖项的可执行JAR包。有关详细信息，请参见 [控制台启动程序](http://junit.org/junit5/docs/current/user-guide/#running-tests-console-launcher)。
+    [junit-platform-console-standalone](https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone) 在Maven仓库包含所有依赖项的可执行JAR包。有关详细信息，请参见 [控制台启动程序](#ConsoleLauncher)。
 
   `junit-platform-engine`
-    用于测试引擎的公共API。请参阅 [自己的测试引擎插件](http://junit.org/junit5/docs/current/user-guide/#launcher-api-engines-custom)信息。
+    用于测试引擎的公共API。请参阅 [ 使用自己的测试引擎插件 ](#PluggingInYourOwnTestEngine)信息。
 
   `junit-platform-gradle-plugin`
-    支持在JUnit Platform上使用[Gradle](http://junit.org/junit5/docs/current/user-guide/#running-tests-build-gradle)发现和执行测试。
+    支持在JUnit Platform上使用[Gradle](#Gradle)发现和执行测试。
 
   `junit-platform-launcher`
-    配置和启动测试计划的公共API——通常由ide和构建工具使用。有关详细信息，请参见[JUnit Platform启动API](http://junit.org/junit5/docs/current/user-guide/#launcher-api)。
+    配置和启动测试计划的公共API——通常由ide和构建工具使用。有关详细信息，请参见[JUnit Platform启动API](#JUnitPlatformLauncherAPI)。
 
   `junit-platform-runner`
-    在JUnit 4环境中，在JUnit平台上执行测试和测试套件的Runner。有关详细信息，请参阅[使用JUnit 4运行JUnit Platform](http://junit.org/junit5/docs/current/user-guide/#running-tests-junit-platform-runner)。
+    在JUnit 4环境中，在JUnit平台上执行测试和测试套件的Runner。有关详细信息，请参阅[使用JUnit 4运行JUnit Platform](#UsingJUnit4ToRunTheJUnitPlatform)。
 
   `junit-platform-suite-api`
-    在JUnit平台上配置测试套件的注解。由[JUnit Platform runner](http://junit.org/junit5/docs/current/user-guide/#running-tests-junit-platform-runner)支持，可由第三方 `TestEngine` 实现支持。
+    在JUnit平台上配置测试套件的注解。由[JUnit Platform runner](#UsingJUnit4ToRunTheJUnitPlatform)支持，可由第三方 `TestEngine` 实现支持。
 
   `junit-platform-surefire-provider`
-    支持在JUnit Platform上使用[Maven Surefire](http://junit.org/junit5/docs/current/user-guide/#running-tests-build-maven)发现和执行测试。
+    支持在JUnit Platform上使用[Maven Surefire](#Maven)发现和执行测试。
 
 #### 2.1.2 JUnit Jupiter（核心）
 
 - **Group ID:** `org.junit.jupiter`
 
-- **Version:** `5.0.2`
+- **Version:** `5.0.3`
 
 - **Artifact IDs:** `junit-jupiter-api`
 
@@ -114,7 +115,7 @@ JUnit 5在运行时需要Java 8\(或更高版本\)。但是，您仍然可以用
 
 - **Group ID:** `org.junit.vintage`
 
-- **Version:** `4.12.2`
+- **Version:** `4.12.3`
 
 - **Artifact ID:** `junit-vintage-engine`
 
@@ -127,6 +128,14 @@ JUnit 5在运行时需要Java 8\(或更高版本\)。但是，您仍然可以用
 - **Group ID:** `org.apiguardian`
 - **Artifact ID:** `apiguardian-api`
 - **Version:** `1.0.0`
+
+此外，上面的大多数内容都对以下OpenTest4J JAR有直接或传递的依赖关系。
+
+- **Group ID**: `org.opentest4j`
+- **Artifact ID**: `opentest4j`
+- **Version**: `1.0.0`
+
+
 
 ## 2.2 依赖关系图
 
@@ -1678,7 +1687,7 @@ Eclipse 4.7(Oxygen) beta 及以上支持JUnit Platform 和JUnit Jupiter。有关
 
 ### 4.2. 构建支持（Build Support）
 
-#### 4.2.1. Gradle
+#### 4.2.1. Gradle{#Gradle}
 
 JUnit团队开发了一个非常基本的Gradle插件，它允许您运行测试引擎支持的任何类型的测试(例如，JUnit 3、JUnit 4、JUnit Jupiter、[Specsy](http://specsy.org/)等)。看到构建。junit5-gradle- consumer项目中的gradle，作为插件的一个例子。
 
@@ -1890,7 +1899,7 @@ Execution failed for task ':junitPlatformTest'.
 注意 | *当前限制的JUnit Gradle插件*
 注意 | 通过JUnit Gradle插件运行的任何测试的结果都不会包含在由Gradle生成的标准测试报告中;但是，测试结果通常可以聚合在CI服务器上。查看该插件的`reportsDir`属性。
 
-#### 4.2.2. Maven
+#### 4.2.2. Maven{#Maven}
 
 JUnit团队开发了一个非常基础的Maven  Surefire程序，它允许您通过`mvn test`运行JUnit 4和JUnit Jupiter测试。[`junit5- maven-consumer`](https://github.com/junit-team/junit5-samples/tree/r5.0.2/junit5-maven-consumer)项目的`pom.xml`文件展示了如何使用它，并作为mavne测试的起点。
 
@@ -2058,7 +2067,7 @@ JUnit Platform Surefire提供可以运行JUnit 4的测试，只要您配置了JU
 ...
 ```
 
-### 4.3. 控制台启动
+### 4.3. 控制台启动 {#ConsoleLauncher}
 
 [`ConsoleLauncher`](http://junit.org/junit5/docs/current/api/org/junit/platform/console/ConsoleLauncher.html)是一个命令行Java应用程序，它允许您从控制台启动JUnit Platform。例如，它可以用于运行`JUnit Vintage`和`JUnit Jupiter`测试，并将测试执行结果打印到控制台。
 
@@ -2176,7 +2185,7 @@ Option                                        Description
                                                 be repeated.
 ```
 
-### 4.4. 使用JUnit 4运行JUnit Platform
+### 4.4. 使用JUnit 4运行JUnit Platform{#UsingJUnit4ToRunTheJUnitPlatform}
 
 `JUnitPlatform` runner是一个基于JUnit 4的`runner`，它让你可以运行任何一个在JUnit 4环境中支持JUnit平台的编程模型的测试，比如，一个JUnit Jupiter 测试类。
 
@@ -2651,7 +2660,7 @@ JUnit Platform共享工件暴露一个包 [`org.junit.platform.commons.support`]
 
 ## 7. 高级主题
 
-### 7.1. JUnit Platform Launcher(启动器) API
+### 7.1. JUnit Platform Launcher(启动器) API{#JUnitPlatformLauncherAPI}
 
 JUnit 5的一个突出目标是使JUnit和它的编程客户机(构建工具和ide)之间的接口更加强大和稳定。其目的是将发现和执行测试的内部结构与外部所需的所有过滤和配置分离开来。
 
@@ -2727,7 +2736,7 @@ launcher.execute(request);
 
 execute()方法没有返回值，但是您可以很容易地使用侦听器将最终结果聚合到您自己的对象中。举个例子，看看 `SummaryGeneratingListener`。
 
-#### 7.1.3. 使用你自己的测试引擎
+#### 7.1.3. 使用你自己的测试引擎{#PluggingInYourOwnTestEngine}
 
 JUnit目前提供了两个TestEngine实现:
 
