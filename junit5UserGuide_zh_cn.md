@@ -268,7 +268,7 @@ class StandardTests {
 }
 ```
 
-![警告](wran.png "警告")   | 测试类和测试方法都不需要写public(默认就是public的)。
+![提示](info.png "提示")   | 测试类和测试方法都不需要写public(默认就是public的)。
 
 ### 3.3. 显示名称（DisplayName）
 
@@ -301,7 +301,7 @@ class DisplayNameDemo {
 
 ### 3.4. 断言（Assertions）
 
-JUnit Jupiter 附带了许多JUnit 4所拥有的断言方法，并添加了一些可以很好地使用Java 8 lambdas的方法。所有的JUnit Jupiter断言都是在`org.junit.jupiter.Assertions`  (断言类)中的静态方法。
+JUnit Jupiter 附带了许多JUnit 4所拥有的断言方法，并添加了一些可以很好地使用Java 8 lambdas的方法。所有的JUnit Jupiter断言都是[`org.junit.jupiter.Assertions`](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/Assertions.html)  (断言类)中的静态方法。
 
 ```java
 import static java.time.Duration.ofMillis;
@@ -427,11 +427,13 @@ class AssertionsDemo {
 
 #### 3.4.1. 第三方断言库
 
-尽管JUnit Jupiter提供的断言工具对于许多测试场景来说已经足够了，但有时还需要更多的功能和额外的功能，如matchers。在这种情况下，JUnit团队建议使用诸如[AssertJ](http://joel-costigliola.github.io/assertj/)、[Hamcrest](http://hamcrest.org/JavaHamcrest/)、[Truth](http://google.github.io/truth/)等第三方断言库，因此开发人员可以自由使用他们选择的断言库。
-例如，可以使用matchers和一个fluent API的组合使断言更具描述性和可读性。然而,JUnit Jupiter的 [org.junit.jupiter.Assertions](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/Assertions.html)断言类没有像JUnit 4的org.junit.Assert 那样提供一个assertThat()方法，Assert 类必须接受Hamcrest Matcher。取而代之的是，鼓励开发人员使用第三方断言库提供的对matchers的内置支持。
-下面的示例演示如何在JUnit Jupiter测试中使用来自Hamcrest的assertThat()支持。只要将Hamcrest库添加到类路径中,可以静态导入方法比如assertThat(), is() 和 equalTo(),然后在assertWithHamcrestMatcher()方法里面进行测试。
+尽管JUnit Jupiter提供的断言工具对于许多测试场景来说已经足够了，但有时还需要更多的和额外的功能，如*matchers*（*匹配器*）。在这种情况下，JUnit团队建议使用诸如[AssertJ](http://joel-costigliola.github.io/assertj/)、[Hamcrest](http://hamcrest.org/JavaHamcrest/)、[Truth](http://google.github.io/truth/)等第三方断言库，因此开发人员可以自由使用他们选择的断言库。
 
-```
+例如，可以使用 *matchers*（*匹配器*）和一个 *fluent*（*流式调用*） API的组合使断言更具描述性和可读性。然而，JUnit Jupiter的 [org.junit.jupiter.Assertions](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/Assertions.html)断言类没有像JUnit 4的 `org.junit.Assert` 那样提供一个[`assertThat()`](http://junit.org/junit4/javadoc/latest/org/junit/Assert.html#assertThat) 方法，此方法接受Hamcrest [`Matcher`](http://junit.org/junit4/javadoc/latest/org/hamcrest/Matcher.html)。取而代之的是，JUnit Jupiter 鼓励开发人员使用第三方断言库提供的对 *matchers*（*匹配器*）的内置支持。
+
+下面的示例演示如何在JUnit Jupiter测试中使用来自Hamcrest的 `assertThat()` 支持。只要将Hamcrest库添加到类路径中，就可以静态导入比如`assertThat()`， `is()`和  `equalTo()` 方法,然后在 `assertWithHamcrestMatcher()`方法里面进行测试，如下所示。
+
+```java
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -448,7 +450,7 @@ class HamcrestAssertionDemo {
 }
 ```
 
-当然，可以继续使用基于JUnit 4遗留的编程模型org.junit.Assert#assertThat进行测试。
+当然，可以继续使用基于JUnit 4遗留的编程模型 `org.junit.Assert#assertThat` 进行测试。
 
 ### 3.5. 假设（Assumptions）
 
