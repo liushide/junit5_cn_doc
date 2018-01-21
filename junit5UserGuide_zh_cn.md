@@ -454,9 +454,9 @@ class HamcrestAssertionDemo {
 
 ### 3.5. 假设（Assumptions）
 
-JUnit Jupiter 附带了JUnit 4提供的Assumptions（假设）方法的子集，并添加了一些可以很好地使用Java 8 lambdas的方法。所有的JUnit Jupiter假设都是 org.junit.jupiter.Assumptions 类的静态方法。
+JUnit Jupiter 附带了JUnit 4提供的Assumptions（假设）方法的子集，并添加了一些可以很好地使用Java 8 lambdas的方法。所有的JUnit Jupiter假设都是 [`org.junit.jupiter.Assumptions`](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/Assumptions.html)  类的静态方法。
 
-```
+```java
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
@@ -497,7 +497,7 @@ class AssumptionsDemo {
 
 这是一个禁用测试类的测试用例。
 
-```
+```java
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -511,7 +511,7 @@ class DisabledClassDemo {
 
 这是一个带有禁用测试方法的测试用例。
 
-```
+```java
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -530,7 +530,7 @@ class DisabledTestsDemo {
 
 ### 3.7. 标签和过滤（Tagging and Filtering）{#TaggingAndFiltering}
 
-可以对测试类和方法进行标记。这些标记稍后可以用于筛选 [test discovery and execution](http://junit.org/junit5/docs/current/user-guide/#running-tests)（测试发现和执行）。
+可以对测试类和方法进行标记。这些标记稍后可以用于过滤 [test discovery and execution](#RunningTests)（测试发现和执行）。
 
 #### 3.7.1. 标签的语法规则（Syntax Rules for Tags）
 
@@ -539,9 +539,9 @@ class DisabledTestsDemo {
 - 一个修剪标签（trimmed tag）不能包含ISO控制字符。
 - 一个修剪标签（trimmed tag）不能包含以下保留字符
   &nbsp; &nbsp;  `,` ,  `(` , `)` , `&` , `|` , `!`
-  ![警告](wran.png "警告")  | 在上面的上下文中，“**修剪（trimmed）**”意味着引导和跟踪空白字符已经被删除。
+  ![信息](info.png "信息")  | 在上面的描述中，“**修剪（trimmed）**”意味着两端的空格字符被删除。
 
-```
+```java
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -559,7 +559,7 @@ class TaggingDemo {
 
 ### 3.8. 测试实例生命周期（Test Instance Lifecycle）{#TestInstanceLifecycle}
 
-为了让单独的测试方法在隔离中被执行，并且为了避免由于可变测试实例状态而产生的意外副作用，JUnit在执行每个测试方法之前创建了一个新的测试类的实例(请参阅下面的说明作为测试方法的内容)。这个“per-method”测试实例生命周期是JUnit Jupiter上的默认行为，类似于所有以前的JUnit版本。
+为了隔离的执行单独的测试方法，并且为了避免由于可变测试实例状态而产生的意外副作用，JUnit在执行每个测试方法之前创建了一个新的测试类的实例(请参阅下面的说明作为测试方法的内容)。这个“per-method”测试实例生命周期是JUnit Jupiter上的默认行为，类似于所有以前的JUnit版本。
 
 如果您希望JUnit Jupiter在同一个测试实例上执行所有的测试方法，只需用`@Testinstance(Lifecycle.PER_CLASS)`注解您的测试类。当使用此模式时，每个测试类将创建一个新的测试实例。因此，如果您的测试方法依赖于实例变量存储的状态，那么您可能需要在`@Beforeeach` 或 `@Aftereach` 方法中重置该状态。
 
@@ -567,16 +567,16 @@ class TaggingDemo {
 
 如果您使用Kotlin编程语言编写测试，您可能也会发现，通过切换到“per-class”测试实例生命周期模式，可以更容易地实现`@Beforeall`和`@Afterall`方法。
 
-![信息](info.png "信息")  | 在测试实例生命周期中，测试方法是用@test、@repeatedtest、@parameterizedtest、@testfactory或@testtemplate来注解的任何方法。
+![信息](info.png "信息")  | 在测试实例生命周期中，测试方法是用 `@Test` ，`@RepeatedTest`， `@ParameterizedTest` ， `@TestFactory`或 `@TestTemplate`  来注解的任何方法。
 
 #### 3.8.1. 更改默认的测试实例生命周期（Changing the Default Test Instance Lifecycle）
 
-如果测试类或测试接口没有用`@TestInstance`进行注解，JUnit Jupiter 将使用默认的生命周期模式。标准的默认模式是`PER_METHOD`;但是，可以更改整个测试计划执行的默认值。改变默认的测试实例的生命周期模式,只需将`junit.jupiter.testinstance.lifecycle.default`配置参数设置为`TestInstance.Lifecycle`中定义一个枚举常数的名称,忽略的情况。这可以作为一个JVM系统属性，在`LauncherDiscoveryRequest`中作为配置参数传递给 `Launcher`，或者通过JUnit平台配置文件(详细信息见配置参数（[Configuration Parameters](http://junit.org/junit5/docs/current/user-guide/#running-tests-config-params)）)。
+如果测试类或测试接口没有用`@TestInstance`进行注解，JUnit Jupiter 将使用默认的生命周期模式。标准的默认模式是`PER_METHOD`;但是，可以更改整个测试计划执行的默认值。改变默认的测试实例的生命周期模式,只需将`junit.jupiter.testinstance.lifecycle.default`配置参数设置为`TestInstance.Lifecycle`中定义一个枚举常数的名称，名称忽略大小写的情况。这可以作为一个JVM系统属性，在`LauncherDiscoveryRequest`中作为配置参数传递给 `Launcher`，或者通过JUnit平台配置文件(详细信息见配置参数（[Configuration Parameters](#ConfigurationParameters)）)。
 
 例如，将默认测试实例生命周期模式设置为 `Lifecycle.PER_CLASS`。您可以使用以下系统属性启动JVM。
 `-Djunit.jupiter.testinstance.lifecycle.default=per_class`
 
-但是，请注意，通过JUnit Platform 配置文件设置默认的测试实例生命周期模式是一个更健壮的解决方案，因为配置文件可以与您的项目一起被检入版本控制系统，因此可以在ide和您的构建软件中使用。
+但是，请注意，通过JUnit Platform 配置文件设置默认的测试实例生命周期模式是一个更健壮的解决方案，因为配置文件可以与您的项目一起被提交到版本控制系统，因此可以在IDE和您的构建软件中使用。
 
 将默认测试实例生命周期模式设置为  `Lifecycle.PER_CLASS `。通过JUnit Platform配置文件创建一个名为 `junit-platform.properties` 的文件。类路径的根属性(例如，`src/test/resources`)，内容如下。
 `junit.jupiter.testinstance.lifecycle.default = per_class`
@@ -1623,7 +1623,7 @@ class DynamicTestsDemo {
 
 ```
 
-## 4. 运行测试
+## 4. 运行测试{#RunningTests}
 
 ### 4.1. IDE 支持
 
@@ -2263,7 +2263,7 @@ public class JUnit4SuiteDemo {
 注意 | *额外的配置选项*
 对于发现和过滤测试，有更多的配置选项，而不仅仅是`@SelectPackages`。请参考[Javadoc](http://junit.org/junit5/docs/current/api/org/junit/platform/suite/api/package-summary.html)了解更多细节。
 
-### 4.5. 配置参数
+### 4.5. 配置参数{#ConfigurationParameters}
 
 除了指导测试类和测试引擎(包括扫描等)的平台之外，有时还需要提供特定于特定测试引擎的额外自定义配置参数。例如，JUnit Jupiter `TestEngine`支持以下用例的配置参数。
 
