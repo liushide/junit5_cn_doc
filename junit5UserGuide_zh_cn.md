@@ -1,116 +1,141 @@
+![junit5](junit5.png)
+
+<h1 align="center"> JUnit 5 用户指南中文版 </h1>
+
+<h1 align="center"> Junit5 User Guide Chinese document </h1>
+
+<h3 align="center"> 版本 5.0.3 </h3>
+
+<h3 align="center"> JUnit 5.0.3 = Platform 1.0.3 + Jupiter 5.0.3 + Vintage 4.12.3 </h3>
+
+<h3 > 根据英文原版[JUnit 5 User Guide](http://junit.org/junit5/docs/current/user-guide/)的内容编写，适当加入了点自己的理解（可以让你更容易理解）  </h3>
+
+<h3 > 感谢英文版作者 Stefan Bechtold、Sam Brannen、Johannes Link、Matthias Merdes、Marc Philipp、Christian Stein 的辛劳付出  </h3>
+
+
+Copyright &copy; 2017-2018, liushide 刘士德 (liushide@qq.com)
+此文档的著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+<h4> 如有问题请发邮件给我 liushide@qq.com </h4> 
+
+
+
 [TOC]
+
 
 
 ## 1. 概述
 
-这个文档的目标是为程序员编写测试、扩展者和构建工具和IDE供应商的引擎作者以及提供全面的参考文档。  
-此文档也可作为[PDF下载](http://junit.org/junit5/docs/current/user-guide/index.pdf)。
+这个文档的目标是为编写测试的程序员、扩展开发人员（extension authors）和引擎开发人员（engine authors）以及构建工具和IDE供应商提供综合全面的参考。
+此文档的[PDF下载](http://junit.org/junit5/docs/current/user-guide/index.pdf)。
 
 ### 1.1. JUnit 5是什么？
 
 与以前的JUnit版本不同，JUnit 5是由三个不同子项目的几个不同的模块组成。  
-**JUnit 5 = JUnit Platform（平台） + JUnit Jupiter（朱庇特（主宰、核心）） + JUnit Vintage（过时版、老版本）**
+**JUnit 5 = JUnit Platform（平台） + JUnit Jupiter（朱庇特（主宰）、核心程序）） + JUnit Vintage（过时版本、老版本的支持）**
 
-**JUnit Platform：**是在JVM上启动测试框架的基础。它还定义了用于开发平台上运行的测试框架的TestEngine API。此外，该平台还提供了一个控制台启动器，可以从命令行启动平台，并为Gradle和Maven构建插件，以及一个基于JUnit 4的运行器，用于在平台上运行任何TestEngine。
+**JUnit Platform：**是在JVM上启动测试框架（[launching testing frameworks](http://junit.org/junit5/docs/current/user-guide/#launcher-api)）的基础。它还定义了用于开发平台上运行的测试框架的测试引擎（[`TestEngine`](http://junit.org/junit5/docs/current/api/org/junit/platform/engine/TestEngine.html)）API。此外，该平台还提供了一个控制台启动器（[Console Launcher](http://junit.org/junit5/docs/current/user-guide/#running-tests-console-launcher)），可以从命令行启动平台，并为 [Gradle](http://junit.org/junit5/docs/current/user-guide/#running-tests-build-gradle) 和 [Maven](http://junit.org/junit5/docs/current/user-guide/#running-tests-build-maven) 构建插件，以及一个基于JUnit 4的运行器（[JUnit 4 based Runner](http://junit.org/junit5/docs/current/user-guide/#running-tests-junit-platform-runner)），用于在平台上运行任何 `TestEngine` 。
 
-**JUnit Jupiter：**是在JUnit 5中编写测试和扩展的新编程模型和扩展模型的组合。Jupiter子项目为在平台上运行Jupiter的测试提供了一个TestEngine （测试引擎）。
+**JUnit Jupiter：**是在JUnit 5中编写测试和扩展的新编程模型（ [programming model](http://junit.org/junit5/docs/current/user-guide/#writing-tests) ）和扩展模型（ [extension model](http://junit.org/junit5/docs/current/user-guide/#extensions) ）的组合。另外，Jupiter子项目还提供了一个`TestEngine`，用于在平台上运行基于Jupiter的测试。
 
-**JUnit Vintage：**提供了一个在平台上运行JUnit 3和JUnit 4的测试引擎。
+**JUnit Vintage：**提供了一个在平台上运行JUnit 3和JUnit 4的 `TestEngine` 。
 
 ### 1.2. 支持的java版本
 
-JUnit 5在运行时需要Java 8\(或更高版本\)。但是，您仍然可以用先前JDK版本编译的代码进行测试。
+JUnit 5在运行时需要Java 8\(或更高版本\)。但是，您仍然可以用老版本JDK编译的代码进行测试。
 
 ### 1.3. 获得帮助
 
-问关于JUnit 5的相关问题（[Stack Overflow](https://stackoverflow.com/questions/tagged/junit5)），或者和我们一起讨论（[Gitter](https://gitter.im/junit-team/junit5)）。
+问关于JUnit 5的相关问题（在 [Stack Overflow](https://stackoverflow.com/questions/tagged/junit5) 进行提问），或者和我们一起讨论（在 [Gitter](https://gitter.im/junit-team/junit5) 上交流）。
 
 ## 2. 安装
 
-最终版本和里程碑都部署到Maven中心。  
-快照构件被部署到[Sonatype](https://oss.sonatype.org/content/repositories/snapshots)的快照存储库\(在[/org/junit](https://oss.sonatype.org/content/repositories/snapshots/org/junit/)下\)。
+最终版本和里程碑版本都部署到Maven仓库中心。  
 
-### 2.1 mavne依赖项的说明
+快照版本被部署到[Sonatype](https://oss.sonatype.org/content/repositories/snapshots)的快照存储库\(在[/org/junit](https://oss.sonatype.org/content/repositories/snapshots/org/junit/)下\)。
+
+### 2.1 依赖项的说明
 
 #### 2.1.1 JUnit Platform（平台）
 
-- **Group ID:**
-  org.junit.platform
-- **Version:**
-  1.0.2
-- **Artifact IDs:**
-  junit-platform-commons
-    JUnit的内部公共库/实用程序。这些实用程序仅供JUnit框架本身使用。不支持外部的使用。不承担外部风险!
+- **Group ID:**  `org.junit.platform`
 
-  junit-platform-console
-    支持从控制台发现和执行JUnit平台上的测试。有关详细信息，请参见 [控制台启动程序](http://junit.org/junit5/docs/current/user-guide/#running-tests-console-launcher)。
+- **Version:**  `1.0.3`
 
-  junit-platform-console-standalone
-    junit-platform-console-standalone在Maven中心库包含所有依赖项的可执行JAR包。有关详细信息，请参见控制台启动程序。
+- **Artifact IDs: **
 
-  junit-platform-engine
-    用于测试引擎的公共API。请参阅 [自己的测试引擎插件](http://junit.org/junit5/docs/current/user-guide/#launcher-api-engines-custom)信息。
+  `junit-platform-commons`
 
-  junit-platform-gradle-plugin
-    支持在JUnit平台上使用[Gradle](http://junit.org/junit5/docs/current/user-guide/#running-tests-build-gradle)发现和执行测试。
+    JUnit的内部公共库（library）/实用程序（utilities）。这些实用程序仅供JUnit框架本身使用。不支持外部的使用。不承担外部使用风险!
 
-  junit-platform-launcher
-    配置和启动测试计划的公共API——通常由ide和构建工具使用。有关详细信息，请参见[JUnit平台启动API](http://junit.org/junit5/docs/current/user-guide/#launcher-api)。
+  `junit-platform-console`
+    支持从控制台发现和执行JUnit Platform上的测试。有关详细信息，请参见 [控制台启动程序](#ConsoleLauncher)。
 
-  junit-platform-runner
-    在JUnit 4环境中，在JUnit平台上执行测试和测试套件的Runner。有关详细信息，请参阅[使用JUnit 4运行JUnit平台](http://junit.org/junit5/docs/current/user-guide/#running-tests-junit-platform-runner)。
+  `junit-platform-console-standalone`
+    [junit-platform-console-standalone](https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone) 在Maven仓库包含所有依赖项的可执行JAR包。有关详细信息，请参见 [控制台启动程序](#ConsoleLauncher)。
 
-  junit-platform-suite-api
-    在JUnit平台上配置测试套件的注解。由[JUnitPlatform runner](http://junit.org/junit5/docs/current/user-guide/#running-tests-junit-platform-runner)支持，可由第三方TestEngine实现支持。
+  `junit-platform-engine`
+    用于测试引擎的公共API。请参阅 [ 使用自己的测试引擎插件 ](#PluggingInYourOwnTestEngine)信息。
 
-  junit-platform-surefire-provider
-    支持在JUnit平台上使用[Maven Surefire](http://junit.org/junit5/docs/current/user-guide/#running-tests-build-maven)发现和执行测试。
+  `junit-platform-gradle-plugin`
+    支持在JUnit Platform上使用[Gradle](#Gradle)发现和执行测试。
+
+  `junit-platform-launcher`
+    配置和启动测试计划的公共API——通常由ide和构建工具使用。有关详细信息，请参见[JUnit Platform启动API](#JUnitPlatformLauncherAPI)。
+
+  `junit-platform-runner`
+    在JUnit 4环境中，在JUnit平台上执行测试和测试套件的Runner。有关详细信息，请参阅[使用JUnit 4运行JUnit Platform](#UsingJUnit4ToRunTheJUnitPlatform)。
+
+  `junit-platform-suite-api`
+    在JUnit平台上配置测试套件的注解。由[JUnit Platform runner](#UsingJUnit4ToRunTheJUnitPlatform)支持，可由第三方 `TestEngine` 实现支持。
+
+  `junit-platform-surefire-provider`
+    支持在JUnit Platform上使用[Maven Surefire](#Maven)发现和执行测试。
 
 #### 2.1.2 JUnit Jupiter（核心）
 
-- **Group ID:**
-  org.junit.jupiter
+- **Group ID:** `org.junit.jupiter`
 
-- **Version:**
-  5.0.2
+- **Version:** `5.0.3`
 
-- **Artifact IDs:**
+- **Artifact IDs:** `junit-jupiter-api`
 
-  junit-jupiter-api
-  [编写测试](http://junit.org/junit5/docs/current/user-guide/#writing-tests)和[扩展](http://junit.org/junit5/docs/current/user-guide/#extensions)的JUnit Jupiter API。
+  [编写测试](#writingTests)和[扩展](#ExtensionModel)的JUnit Jupiter API。
 
-  junit-jupiter-engine
+  `junit-jupiter-engine`
     JUnit Jupiter 测试引擎实现，只在运行时需要。
 
-  junit-jupiter-params
-    支持JUnit Jupiter 的参数化测试。
+  `junit-jupiter-params`
+    支持JUnit Jupiter 的[参数化测试](#ParameterizedTests)。
 
-  junit-jupiter-migrationsupport
-    从JUnit 4到JUnit Jupiter的迁移支持，只需要运行选定的JUnit 4规则。
+  `junit-jupiter-migrationsupport`
+    从JUnit 4迁移到JUnit Jupiter的支持，只在使用了JUnit 4规则的测试中才需要选定。
 
-#### 2.1.3 JUnit Vintage（过时版、老版本）
+#### 2.1.3 JUnit Vintage（老版本支持）
 
-- **Group ID:**
-  org.junit.vintage
+- **Group ID:** `org.junit.vintage`
 
-- **Version:**
-  4.12.2
+- **Version:** `4.12.3`
 
-- **Artifact ID:**
+- **Artifact ID:** `junit-vintage-engine`
 
-  junit-vintage-engine
-    JUnit老式测试引擎实现，允许运行老式的JUnit测试，即在新的JUnit平台上编写的JUnit 3或JUnit 4风格的测试。
+    JUnit Vintage测试引擎实现，允许运行老式的JUnit测试，即在新的JUnit平台上编写的JUnit 3或JUnit 4风格的测试。
 
 #### 2.1.4 可选依赖关系
 
-上述所有内容都有一个可选的依赖项，在其发布的Maven POMs上，在以下的@api Guardian JAR中。
+上述所有内容都有一个可选的依赖项，在其发布的Maven POM中，在以下的*@API Guardian* JAR中。
 
-- **Group ID:**
-  org.apiguardian
-- **Artifact ID:**
-  apiguardian-api
-- **Version:**
-  1.0.0
+- **Group ID:** `org.apiguardian`
+- **Artifact ID:** `apiguardian-api`
+- **Version:** `1.0.0`
+
+此外，上面的大多数内容都对以下OpenTest4J JAR有直接或传递的依赖关系。
+
+- **Group ID**: `org.opentest4j`
+- **Artifact ID**: `opentest4j`
+- **Version**: `1.0.0`
+
+
 
 ## 2.2 依赖关系图
 
@@ -118,13 +143,13 @@ JUnit 5在运行时需要Java 8\(或更高版本\)。但是，您仍然可以用
 
 ## 2.3 JUnit Jupiter 样本项目
 
-junit5样本库托管了一组基于JUnit Jupiter和JUnit Vintage的示例项目的集合。您将找到 build.gradle 和 pom.xml 构建的下面的项目。
+junit5样本库（ [`junit5-samples`](https://github.com/junit-team/junit5-samples) ）托管了一组基于JUnit Jupiter和JUnit Vintage的示例项目的集合。您可以在下面的项目找到 build.gradle 和 pom.xml 构建的文件。
 
 - 对于Gradle，请查看 [junit5 - Gradle - consumer](https://github.com/junit-team/junit5-samples/tree/r5.0.2/junit5-gradle-consumer) 项目。
 - 对于Maven，请查看 [junit5 -maven- consumer](https://github.com/junit-team/junit5-samples/tree/r5.0.2/junit5-maven-consumer) 项目。
 
 
-## 3. 编写测试
+## 3. 编写测试{#writingTests}
 
 *第一个测试用例*
 
@@ -145,37 +170,40 @@ class FirstJUnit5Tests {
 
 ### 3.1 注解说明
 
-JUnit Jupiter 支持下面的注释来配置测试和扩展框架。
+JUnit Jupiter 支持下面的注解来配置测试和扩展框架。
 所有的核心注解都位于 junit-jupiter-api 模块的 [org.junit.jupiter.api](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/package-summary.html) 包中。
 
 | 注解                 | 描述                                       |
 | ------------------ | ---------------------------------------- |
-| @Test              | 表示方法是一种测试方法。与JUnit 4的@ test注释不同，这个注释没有声明任何属性，因为JUnit Jupiter的测试扩展基于它们自己的专用注解进行操作。这些方法可以被继承，除非它们被重写。 |
-| @ParameterizedTest | 表示方法是 [parameterized test](http://junit.org/junit5/docs/current/user-guide/#writing-tests-parameterized-tests)(参数化的测试)。这些方法可以被继承，除非它们被重写。 |
-| @RepeatedTest      | 表示方法是[ repeated test](http://junit.org/junit5/docs/current/user-guide/#writing-tests-repeated-tests)(重复测试)的测试模板。这些方法可以被继承，除非它们被重写。 |
-| @TestFactory       | 表示方法是用于[dynamic tests](http://junit.org/junit5/docs/current/user-guide/#writing-tests-dynamic-tests)(动态测试)的测试工厂。这些方法可以被继承，除非它们被重写。 |
-| @TestInstance      | 用于为带注解的测试类配置[test instance lifecycle](http://junit.org/junit5/docs/current/user-guide/#writing-tests-test-instance-lifecycle)(测试实例生命周期)。这些方法可以被继承。 |
-| @TestTemplate      | 表示方法是用来根据注册[providers](http://junit.org/junit5/docs/current/user-guide/#extensions-test-templates)(提供者)返回的调用上下文多次调用的[template for test cases](http://junit.org/junit5/docs/current/user-guide/#writing-tests-test-templates)(测试用例的模板)。这些方法可以被继承，除非它们被重写。 |
+| @Test              | 表示方法是一种测试方法。与JUnit 4的  `@Test` 注解不同，这个注解没有声明任何属性，因为JUnit Jupiter的测试扩展是基于它们自己的专用注解进行操作的。这些方法可以被继承，除非它们被重写。 |
+| @ParameterizedTest | 表示方法是 [parameterized test](#ParameterizedTests)(参数化测试)。这些方法可以被继承，除非它们被重写。 |
+| @RepeatedTest      | 表示方法是[ repeated test](#RepeatedTests)(重复测试)的测试模板。这些方法可以被继承，除非它们被重写。 |
+| @TestFactory       | 表示方法是用于[dynamic tests](#DynamicTests)(动态测试)的测试工厂。这些方法可以被继承，除非它们被重写。 |
+| @TestInstance      | 用于为带注解的测试类配置[test instance lifecycle](#TestInstanceLifecycle)(测试实例生命周期)。这些注解可以被继承。 |
+| @TestTemplate      | 表示方法是用来根据注册[providers](#ProvidingInvocationContextsForTestTemplates)(提供者)返回的调用上下文多次调用的[template for test cases](#TestTemplates)(测试用例的模板)。这些方法可以被继承，除非它们被重写。 |
 | @DisplayName       | 声明测试类或测试方法的自定义显示名称。这样的注解不能被继承。           |
-| @BeforeEach        | 表示在当前类中每个@test、@repeatedtest、@parameterizedtest 或 @testfactory方法执行前都要执行这个方法；类似于JUnit 4的@before。这些方法可以被继承，除非它们被重写。 |
-| @AfterEach         | 表示在当前类中每个@test、@repeatedtest、@parameterizedtest 或 @testfactory方法执行后都要执行这个方法;类似于JUnit 4的@after。这些方法可以被继承，除非它们被重写。 |
-| @BeforeAll         | 表示在当前类中只运行一次，在所有@test、@repeatedtest、@parameterizedtest 和 @testfactory方法执行前运行;类似于JUnit 4的@beforeclass。这些方法可以被继承的(除非它们是隐藏的或覆盖的)，并且必须是静态的(除非使用“per-class”[test instance lifecycle](http://junit.org/junit5/docs/current/user-guide/#writing-tests-test-instance-lifecycle) (测试实例生命周期))。 |
-| @AfterAll          | 表示在当前类中只运行一次，在所有@test、@repeatedtest、@parameterizedtest 和 @testfactory方法执行后运行;类似于JUnit 4的@afterclass。这些方法可以被继承(除非它们是隐藏的或覆盖的)，并且必须是静态的(除非使用“per-class”[test instance lifecycle](http://junit.org/junit5/docs/current/user-guide/#writing-tests-test-instance-lifecycle) (测试实例生命周期))。 |
-| @Nested            | 表示带注释的类是嵌套的非静态测试类。@beforeall 和 @afterall方法不能直接在 @Nested 测试类中使用，除非使用(除非使用“per-class”[test instance lifecycle](http://junit.org/junit5/docs/current/user-guide/#writing-tests-test-instance-lifecycle) (测试实例生命周期))。这样的注解不能被继承。 |
-| @Tag               | 用于在类或方法级别为筛选测试声明标记;类似于TestNG中的测试组或JUnit 4中的类别。此类注解是在类级别继承而不是在方法级继承的。 |
-| @Disabled          | 用于禁用测试类或测试方法;类似于JUnit 4的@ignore。这样的注解不能被继承。 |
-| @ExtendWith        | 用于注册自定义扩展。这些注释可以被继承。                     |
+| @BeforeEach        | 表示在当前类中**每个**  `@Test`, `@RepeatedTest`, `@ParameterizedTest`或   `@TestFactory` 方法执行前都要执行这个方法；类似于JUnit 4的 `@Before`。这些方法可以被继承，除非它们被重写。 |
+| @AfterEach         | 表示在当前类中**每个**`@Test`, `@RepeatedTest`, `@ParameterizedTest`或   `@TestFactory`方法执行后都要执行这个方法;类似于JUnit 4的 `@After`。这些方法可以被继承，除非它们被重写。 |
+| @BeforeAll         | 表示在当前类中只运行一次，在**所有**`@Test`, `@RepeatedTest`, `@ParameterizedTest`或   `@TestFactory`方法执行前运行;类似于JUnit 4的 `@BeforeClass`。这些方法可以被继承的(除非它们是隐藏的或覆盖的)，并且必须是 `static` 的(除非使用“per-class”[test instance lifecycle](#TestInstanceLifecycle) (测试实例生命周期))。 |
+| @AfterAll          | 表示在当前类中只运行一次，在**所有**`@Test`, `@RepeatedTest`, `@ParameterizedTest`或   `@TestFactory`方法执行后运行;类似于JUnit 4的 `@AfterClass`。这些方法可以被继承(除非它们是隐藏的或覆盖的)，并且必须是静态的(除非使用“per-class”[test instance lifecycle](#TestInstanceLifecycle) (测试实例生命周期))。 |
+| @Nested            | 表示带注解的类是内嵌的非静态测试类。 `@BeforeAll` 和 `@AfterAll`方法不能直接在  `@Nested` 测试类中使用，(除非使用“per-class”[test instance lifecycle](#TestInstanceLifecycle) (测试实例生命周期))。这样的注解不能被继承。 |
+| @Tag               | 用于在类或方法级别为过滤测试声明 `tags` ;类似于TestNG中的测试组或JUnit 4中的分类。此注解只能用于类级别不能用在方法基本。 |
+| @Disabled          | 用于禁用测试类或测试方法;类似于JUnit 4的  `@Ignore`。这样的注解不能被继承。 |
+| @ExtendWith        | 用于注册自定义 [extensions](#ExtensionModel) （扩展）。这些注解不能被继承。 |
 
-方法被@test、@testtemplate、@repeatedtest、@beforeall、@afterall、@beforeeach 或 @aftereach注解了都不能返回一个值，都应该是 public void XXX(){ } 。
-![警告](wran.png "警告")   | 有些注解目前可能是实验性的。有关详细信息，请参阅实[验性api](http://junit.org/junit5/docs/current/user-guide/#api-evolution-experimental-apis)中的表。
+方法被 `@Test`, `@TestTemplate`, `@RepeatedTest`, `@BeforeAll`, `@AfterAll`, `@BeforeEach`, 或 `@AfterEach` 注解了都不能有返回值，都应该是 public void XXX(args... ){ ... } 这样的方法 。
 
-#### 3.1.1 元注解，组合注解
+|                      |                                          |
+| -------------------- | ---------------------------------------- |
+| ![警告](wran.png "警告") | 有些注解目前可能是实验性的。有关详细信息，请参阅实[验性api](#ExperimentalAPIs)中的表。 |
 
-JUnit Jupiter注解可以用作元注解。这意味着您可以定义自己的组合注释，它将自动继承其元注释的语义。
+#### 3.1.1 元注解和组合注解
 
-例如，在您的代码库中(参见[Tagging and Filtering](http://junit.org/junit5/docs/current/user-guide/#writing-tests-tagging-and-filtering)(标签和过滤))，您可以创建一个名为@fast的自定义组合注释，而不是复制和粘贴@tag("fast")。如下所示，@fast可以被用作替代@tag("fast")。
+JUnit Jupiter注解可以用作*元注解*。这意味着您可以定义自己的*组合注解*，它将自动*继承*其元注解的语义。
 
-```
+例如，在您的代码库中(参见[Tagging and Filtering](#TaggingAndFiltering)(标签和过滤))，您可以创建一个名为 `@Fast` 的自定义组合注解，而不是复制和粘贴 `@Tag("fast")` 。如下所示， `@Fast` 可以被用作替代 `@Tag("fast")`。
+
+```java
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -194,7 +222,7 @@ public @interface Fast {
 
 *一个标准的测试用例*
 
-```
+```java
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
@@ -240,13 +268,13 @@ class StandardTests {
 }
 ```
 
-![警告](wran.png "警告")   | 测试类和测试方法都不需要写public(默认就是public的)。
+![提示](info.png "提示")   | 测试类和测试方法都不需要写public(默认就是public的)。
 
-### 3.3. DisplayName(显示名称)
+### 3.3. 显示名称（DisplayName）
 
-测试类和测试方法可以声明自定义DisplayName(显示名称)——有空格、特殊字符，甚至是表情符号——这些都将由测试者和测试报告显示出来。
+测试类和测试方法可以声明自定义DisplayName（显示名称）。**“空格、特殊字符，甚至是表情符号”**这些都可以在测试运行器和测试报告显示出来，如下所示。
 
-```
+```java
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -273,9 +301,9 @@ class DisplayNameDemo {
 
 ### 3.4. 断言（Assertions）
 
-JUnit Jupiter 附带了许多JUnit 4所拥有的断言方法，并添加了一些可以很好地使用Java 8 lambdas的方法。所有的JUnit Jupiter断言都是在 org.junit.jupiter.Assertions (断言类)中的静态方法。
+JUnit Jupiter 附带了许多JUnit 4所拥有的断言方法，并添加了一些可以很好地使用Java 8 lambdas的方法。所有的JUnit Jupiter断言都是[`org.junit.jupiter.Assertions`](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/Assertions.html)  (断言类)中的静态方法。
 
-```
+```java
 import static java.time.Duration.ofMillis;
 import static java.time.Duration.ofMinutes;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -399,11 +427,13 @@ class AssertionsDemo {
 
 #### 3.4.1. 第三方断言库
 
-尽管JUnit Jupiter提供的断言工具对于许多测试场景来说已经足够了，但有时还需要更多的功能和额外的功能，如matchers。在这种情况下，JUnit团队建议使用诸如[AssertJ](http://joel-costigliola.github.io/assertj/)、[Hamcrest](http://hamcrest.org/JavaHamcrest/)、[Truth](http://google.github.io/truth/)等第三方断言库，因此开发人员可以自由使用他们选择的断言库。
-例如，可以使用matchers和一个fluent API的组合使断言更具描述性和可读性。然而,JUnit Jupiter的 [org.junit.jupiter.Assertions](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/Assertions.html)断言类没有像JUnit 4的org.junit.Assert 那样提供一个assertThat()方法，Assert 类必须接受Hamcrest Matcher。取而代之的是，鼓励开发人员使用第三方断言库提供的对matchers的内置支持。
-下面的示例演示如何在JUnit Jupiter测试中使用来自Hamcrest的assertThat()支持。只要将Hamcrest库添加到类路径中,可以静态导入方法比如assertThat(), is() 和 equalTo(),然后在assertWithHamcrestMatcher()方法里面进行测试。
+尽管JUnit Jupiter提供的断言工具对于许多测试场景来说已经足够了，但有时还需要更多的和额外的功能，如*matchers*（*匹配器*）。在这种情况下，JUnit团队建议使用诸如[AssertJ](http://joel-costigliola.github.io/assertj/)、[Hamcrest](http://hamcrest.org/JavaHamcrest/)、[Truth](http://google.github.io/truth/)等第三方断言库，因此开发人员可以自由使用他们选择的断言库。
 
-```
+例如，可以使用 *matchers*（*匹配器*）和一个 *fluent*（*流式调用*） API的组合使断言更具描述性和可读性。然而，JUnit Jupiter的 [org.junit.jupiter.Assertions](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/Assertions.html)断言类没有像JUnit 4的 `org.junit.Assert` 那样提供一个[`assertThat()`](http://junit.org/junit4/javadoc/latest/org/junit/Assert.html#assertThat) 方法，此方法接受Hamcrest [`Matcher`](http://junit.org/junit4/javadoc/latest/org/hamcrest/Matcher.html)。取而代之的是，JUnit Jupiter 鼓励开发人员使用第三方断言库提供的对 *matchers*（*匹配器*）的内置支持。
+
+下面的示例演示如何在JUnit Jupiter测试中使用来自Hamcrest的 `assertThat()` 支持。只要将Hamcrest库添加到类路径中，就可以静态导入比如`assertThat()`， `is()`和  `equalTo()` 方法,然后在 `assertWithHamcrestMatcher()`方法里面进行测试，如下所示。
+
+```java
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -420,13 +450,13 @@ class HamcrestAssertionDemo {
 }
 ```
 
-当然，可以继续使用基于JUnit 4遗留的编程模型org.junit.Assert#assertThat进行测试。
+当然，可以继续使用基于JUnit 4遗留的编程模型 `org.junit.Assert#assertThat` 进行测试。
 
 ### 3.5. 假设（Assumptions）
 
-JUnit Jupiter 附带了JUnit 4提供的Assumptions（假设）方法的子集，并添加了一些可以很好地使用Java 8 lambdas的方法。所有的JUnit Jupiter假设都是 org.junit.jupiter.Assumptions 类的静态方法。
+JUnit Jupiter 附带了JUnit 4提供的Assumptions（假设）方法的子集，并添加了一些可以很好地使用Java 8 lambdas的方法。所有的JUnit Jupiter假设都是 [`org.junit.jupiter.Assumptions`](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/Assumptions.html)  类的静态方法。
 
-```
+```java
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
@@ -467,7 +497,7 @@ class AssumptionsDemo {
 
 这是一个禁用测试类的测试用例。
 
-```
+```java
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -481,7 +511,7 @@ class DisabledClassDemo {
 
 这是一个带有禁用测试方法的测试用例。
 
-```
+```java
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -498,9 +528,9 @@ class DisabledTestsDemo {
 }
 ```
 
-### 3.7. 标签和过滤（Tagging and Filtering）
+### 3.7. 标签和过滤（Tagging and Filtering）{#TaggingAndFiltering}
 
-可以对测试类和方法进行标记。这些标记稍后可以用于筛选 [test discovery and execution](http://junit.org/junit5/docs/current/user-guide/#running-tests)（测试发现和执行）。
+可以对测试类和方法进行标记。这些标记稍后可以用于过滤 [test discovery and execution](#RunningTests)（测试发现和执行）。
 
 #### 3.7.1. 标签的语法规则（Syntax Rules for Tags）
 
@@ -509,9 +539,9 @@ class DisabledTestsDemo {
 - 一个修剪标签（trimmed tag）不能包含ISO控制字符。
 - 一个修剪标签（trimmed tag）不能包含以下保留字符
   &nbsp; &nbsp;  `,` ,  `(` , `)` , `&` , `|` , `!`
-  ![警告](wran.png "警告")  | 在上面的上下文中，“**修剪（trimmed）**”意味着引导和跟踪空白字符已经被删除。
+  ![信息](info.png "信息")  | 在上面的描述中，“**修剪（trimmed）**”意味着两端的空格字符被删除。
 
-```
+```java
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -527,9 +557,9 @@ class TaggingDemo {
 }
 ```
 
-### 3.8. 测试实例的生命周期（Test Instance Lifecycle）
+### 3.8. 测试实例生命周期（Test Instance Lifecycle）{#TestInstanceLifecycle}
 
-为了让单独的测试方法在隔离中被执行，并且为了避免由于可变测试实例状态而产生的意外副作用，JUnit在执行每个测试方法之前创建了一个新的测试类的实例(请参阅下面的说明作为测试方法的内容)。这个“per-method”测试实例生命周期是JUnit Jupiter上的默认行为，类似于所有以前的JUnit版本。
+为了隔离的执行单独的测试方法，并且为了避免由于可变测试实例状态而产生的意外副作用，JUnit在执行每个测试方法之前创建了一个新的测试类的实例(请参阅下面的说明作为测试方法的内容)。这个“per-method”测试实例生命周期是JUnit Jupiter上的默认行为，类似于所有以前的JUnit版本。
 
 如果您希望JUnit Jupiter在同一个测试实例上执行所有的测试方法，只需用`@Testinstance(Lifecycle.PER_CLASS)`注解您的测试类。当使用此模式时，每个测试类将创建一个新的测试实例。因此，如果您的测试方法依赖于实例变量存储的状态，那么您可能需要在`@Beforeeach` 或 `@Aftereach` 方法中重置该状态。
 
@@ -537,16 +567,16 @@ class TaggingDemo {
 
 如果您使用Kotlin编程语言编写测试，您可能也会发现，通过切换到“per-class”测试实例生命周期模式，可以更容易地实现`@Beforeall`和`@Afterall`方法。
 
-![信息](info.png "信息")  | 在测试实例生命周期中，测试方法是用@test、@repeatedtest、@parameterizedtest、@testfactory或@testtemplate来注解的任何方法。
+![信息](info.png "信息")  | 在测试实例生命周期中，测试方法是用 `@Test` ，`@RepeatedTest`， `@ParameterizedTest` ， `@TestFactory`或 `@TestTemplate`  来注解的任何方法。
 
 #### 3.8.1. 更改默认的测试实例生命周期（Changing the Default Test Instance Lifecycle）
 
-如果测试类或测试接口没有用`@TestInstance`进行注解，JUnit Jupiter 将使用默认的生命周期模式。标准的默认模式是`PER_METHOD`;但是，可以更改整个测试计划执行的默认值。改变默认的测试实例的生命周期模式,只需将`junit.jupiter.testinstance.lifecycle.default`配置参数设置为`TestInstance.Lifecycle`中定义一个枚举常数的名称,忽略的情况。这可以作为一个JVM系统属性，在`LauncherDiscoveryRequest`中作为配置参数传递给 `Launcher`，或者通过JUnit平台配置文件(详细信息见配置参数（[Configuration Parameters](http://junit.org/junit5/docs/current/user-guide/#running-tests-config-params)）)。
+如果测试类或测试接口没有用`@TestInstance`进行注解，JUnit Jupiter 将使用默认的生命周期模式。标准的默认模式是`PER_METHOD`;但是，可以更改整个测试计划执行的默认值。改变默认的测试实例的生命周期模式,只需将`junit.jupiter.testinstance.lifecycle.default`配置参数设置为`TestInstance.Lifecycle`中定义一个枚举常数的名称，名称忽略大小写的情况。这可以作为一个JVM系统属性，在`LauncherDiscoveryRequest`中作为配置参数传递给 `Launcher`，或者通过JUnit平台配置文件(详细信息见配置参数（[Configuration Parameters](#ConfigurationParameters)）)。
 
 例如，将默认测试实例生命周期模式设置为 `Lifecycle.PER_CLASS`。您可以使用以下系统属性启动JVM。
 `-Djunit.jupiter.testinstance.lifecycle.default=per_class`
 
-但是，请注意，通过JUnit Platform 配置文件设置默认的测试实例生命周期模式是一个更健壮的解决方案，因为配置文件可以与您的项目一起被检入版本控制系统，因此可以在ide和您的构建软件中使用。
+但是，请注意，通过JUnit Platform 配置文件设置默认的测试实例生命周期模式是一个更健壮的解决方案，因为配置文件可以与您的项目一起被提交到版本控制系统，因此可以在IDE和您的构建软件中使用。
 
 将默认测试实例生命周期模式设置为  `Lifecycle.PER_CLASS `。通过JUnit Platform配置文件创建一个名为 `junit-platform.properties` 的文件。类路径的根属性(例如，`src/test/resources`)，内容如下。
 `junit.jupiter.testinstance.lifecycle.default = per_class`
@@ -761,7 +791,7 @@ class MyMockitoTest {
 
 ### 3.11. 测试接口和默认方法（Test Interfaces and Default Methods）
 
-JUnit Jupiter 允许@Test, @RepeatedTest, @ParameterizedTest, @TestFactory, @TestTemplate, @BeforeEach, @AfterEach在接口 `default` 方法上声明。如果测试接口或测试类被用`@TestInstance(Lifecycle.PER_CLASS)`注释(参见测试实例生命周期（[Test Instance Lifecycle](http://junit.org/junit5/docs/current/user-guide/#writing-tests-test-instance-lifecycle)）)，@BeforeAll 和 @AfterAll可以在测试接口`static`方法或接口`default` 方法中声明。这里有一些例子。
+JUnit Jupiter 允许@Test, @RepeatedTest, @ParameterizedTest, @TestFactory, @TestTemplate, @BeforeEach, @AfterEach在接口 `default` 方法上声明。如果测试接口或测试类被用`@TestInstance(Lifecycle.PER_CLASS)`注解(参见测试实例生命周期（[Test Instance Lifecycle](http://junit.org/junit5/docs/current/user-guide/#writing-tests-test-instance-lifecycle)）)，@BeforeAll 和 @AfterAll可以在测试接口`static`方法或接口`default` 方法中声明。这里有一些例子。
 
 ```
 @TestInstance(Lifecycle.PER_CLASS)
@@ -952,9 +982,9 @@ class StringTests implements ComparableContract<String>, EqualsContract<String> 
 
 ![警告](warn.png "警告")  | 上述测试仅仅是作为例子，因此不完整。
 
-### 3.12. 重复测试（Repeated Tests）
+### 3.12. 重复测试（Repeated Tests）{#RepeatedTests}
 
-JUnit Jupiter 通过使用 `@RepeatedTest` 来注释一个方法并指定所需重复的总数，从而提供了重复测试指定次数的能力。重复测试的每次调用行为都类似于执行常规的`@Test`方法，完全支持相同的生命周期回调和扩展。
+JUnit Jupiter 通过使用 `@RepeatedTest` 来注解一个方法并指定所需重复的总数，从而提供了重复测试指定次数的能力。重复测试的每次调用行为都类似于执行常规的`@Test`方法，完全支持相同的生命周期回调和扩展。
 
 下面的示例演示如何声明一个名为repeatedTest()的测试，该测试将自动重复10次。
 
@@ -965,7 +995,7 @@ void repeatedTest() {
 }
 ```
 
-除了指定重复次数之外，还可以通过`@RepeatedTest`注释的name属性为每次重复配置一个自定义显示名称。此外，显示名称可以是由静态文本和动态占位符组合而成的模式。目前支持以下占位符。
+除了指定重复次数之外，还可以通过`@RepeatedTest`注解的name属性为每次重复配置一个自定义显示名称。此外，显示名称可以是由静态文本和动态占位符组合而成的模式。目前支持以下占位符。
 
 - {displayName}: 显示`@RepeatedTest`方法的名称
 - {currentRepetition}: 当前重复计数
@@ -1099,9 +1129,9 @@ class RepeatedTestsDemo {
 │     └─ Wiederholung 5 von 5 ✔
 ```
 
-### 3.13. 参数化测试（Parameterized Tests）
+### 3.13. 参数化测试（Parameterized Tests）{#ParameterizedTests}
 
-参数化测试可以用不同的参数多次运行测试。它们像普通的`@Test`方法一样被声明，但是使用`@ParameterizedTest`注释。此外，您必须声明至少一个参数源，它将为每次调用提供参数。
+参数化测试可以用不同的参数多次运行测试。它们像普通的`@Test`方法一样被声明，但是使用`@ParameterizedTest`注解。此外，您必须声明至少一个参数源，它将为每次调用提供参数。
 
 警告：参数化测试目前是一个实验特性。有关详细信息，请参阅实验性api（[Experimental APIs](http://junit.org/junit5/docs/current/user-guide/#api-evolution-experimental-apis)）中的表。
 
@@ -1113,7 +1143,7 @@ void palindromes(String candidate) {
 }
 ```
 
-这个参数化测试使用`@ValueSource`注释来指定字符串数组作为参数的来源。执行上述方法时，每个调用将分别报告。例如，`ConsoleLauncher`会输出类似以下的结果。
+这个参数化测试使用`@ValueSource`注解来指定字符串数组作为参数的来源。执行上述方法时，每个调用将分别报告。例如，`ConsoleLauncher`会输出类似以下的结果。
 
 ```
 palindromes(String) ✔
@@ -1144,7 +1174,7 @@ void testWithValueSource(int argument) {
 
 #### @EnumSource
 
-`@EnumSource` 提供了一种方便的方法来使用`Enum`常量。该注释提供了一个可选的`names`参数，允许您指定使用哪个常量。如果省略，所有的常量将在下面的例子中使用。
+`@EnumSource` 提供了一种方便的方法来使用`Enum`常量。该注解提供了一个可选的`names`参数，允许您指定使用哪个常量。如果省略，所有的常量将在下面的例子中使用。
 
 ```
 @ParameterizedTest
@@ -1164,7 +1194,7 @@ void testWithEnumSourceInclude(TimeUnit timeUnit) {
 
 ```
 
-`@EnumSource`注释还提供了一个可选的参数`mode`，使细粒度的控制常数被传递到测试方法。例如，可以在枚举常量池中排除名称，或者在以下示例中指定正则表达式。
+`@EnumSource`注解还提供了一个可选的参数`mode`，使细粒度的控制常数被传递到测试方法。例如，可以在枚举常量池中排除名称，或者在以下示例中指定正则表达式。
 
 ```
 @ParameterizedTest
@@ -1352,7 +1382,7 @@ void testWithImplicitArgumentConversion(TimeUnit argument) {
 
 ##### 显式转换（Explicit Conversion）
 
-与其使用隐式参数转换，您可以显式地指定一个`ArgumentConverter`来使用`@ConvertWith`注释来使用某个参数，比如下面的例子。
+与其使用隐式参数转换，您可以显式地指定一个`ArgumentConverter`来使用`@ConvertWith`注解来使用某个参数，比如下面的例子。
 
 ```
 @ParameterizedTest
@@ -1372,7 +1402,7 @@ static class ToStringArgumentConverter extends SimpleArgumentConverter {
 
 ```
 
-显式参数转换是由测试者实现的。因此,junit-jupiter-params只提供了一个显式参数转换类：`JavaTimeArgumentConverter`,也可以作为一种参考实现。这是通过使用注释`JavaTimeConversionPattern`组成例子。
+显式参数转换是由测试者实现的。因此,junit-jupiter-params只提供了一个显式参数转换类：`JavaTimeArgumentConverter`,也可以作为一种参考实现。这是通过使用注解`JavaTimeConversionPattern`组成例子。
 
 ```
 @ParameterizedTest
@@ -1385,7 +1415,7 @@ void testWithExplicitJavaTimeConverter(@JavaTimeConversionPattern("dd.MM.yyyy") 
 
 #### 3.13.4. 自定义显示的名字（Customizing Display Names）
 
-默认情况下，参数化测试调用的显示名称包含调用索引和特定调用的所有参数的字符串表示。但是，您可以通过以下示例中的`@ParameterizedTest`注释的`name`属性来定制调用显示名称。
+默认情况下，参数化测试调用的显示名称包含调用索引和特定调用的所有参数的字符串表示。但是，您可以通过以下示例中的`@ParameterizedTest`注解的`name`属性来定制调用显示名称。
 
 ```
 @DisplayName("Display name of container")
@@ -1439,15 +1469,15 @@ void afterEach(TestInfo testInfo) {
 
 ```
 
-### 3.14. 测试模板（Test Templates）
+### 3.14. 测试模板（Test Templates）{#TestTemplates}
 
 [`@TestTemplate`](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/TestTemplate.html)方法不是常规的测试用例，而是测试用例的模板。因此，根据注册提供者返回的调用上下文的数量，它被设计为多次调用。因此,它必须使用与注册[`TestTemplateInvocationContextProvider`](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/extension/TestTemplateInvocationContextProvider.html)的扩展。测试模板方法的每次调用都像一个常规的`@Test`方法的执行，完全支持相同的生命周期回调和扩展。请参考为使用示例提供测试模板的调用上下文（[`Providing Invocation Contexts for Test Templates`](http://junit.org/junit5/docs/current/user-guide/#extensions-test-templates)）。
 
-### 3.15. 动态测试（Dynamic Tests）
+### 3.15. 动态测试（Dynamic Tests）{#DynamicTests}
 
-在注释中描述的JUnit Jupiter 上的标准`@Test`注解与JUnit 4中的`@Test`注释非常相似。都描述了实现测试用例的方法。这些测试用例是静态的，它们在编译时被完全指定，而且它们的行为不能被运行时发生的任何事情改变。假设提供了一种基本形式的动态行为，但在他们的表现力上却有意限制。
+在注解中描述的JUnit Jupiter 上的标准`@Test`注解与JUnit 4中的`@Test`注解非常相似。都描述了实现测试用例的方法。这些测试用例是静态的，它们在编译时被完全指定，而且它们的行为不能被运行时发生的任何事情改变。假设提供了一种基本形式的动态行为，但在他们的表现力上却有意限制。
 
-除了这些标准测试之外，JUnit Jupiter还引入了一种全新的测试编程模型。这种新的测试是一个动态测试，它是在运行时通过一个与`@TestFactory`注释的工厂方法生成的。
+除了这些标准测试之外，JUnit Jupiter还引入了一种全新的测试编程模型。这种新的测试是一个动态测试，它是在运行时通过一个与`@TestFactory`注解的工厂方法生成的。
 
 与`@Test`方法相比，`@TestFactory`方法本身并不是一个测试用例，而是一个用于测试用例的工厂。因此，动态测试是工厂的产品。从技术上讲，`@TestFactory`方法必须返回动态节点实例的流（`Stream`）、集合（`Collection`）、迭代器（`Iterable`、`Iterator`）的`DynamicNode`实例，`DynamicNode`的实例子类是`DynamicContainer`和`DynamicTest`。`DynamicContainer`实例由一个显示名称和一个动态子节点列表组成，可以创建任意嵌套的动态节点层次结构。然后，`DynamicTest`实例将被延迟执行，从而支持动态甚至不确定的测试用例生成。
 
@@ -1593,7 +1623,7 @@ class DynamicTestsDemo {
 
 ```
 
-## 4. 运行测试
+## 4. 运行测试{#RunningTests}
 
 ### 4.1. IDE 支持
 
@@ -1658,7 +1688,7 @@ Eclipse 4.7(Oxygen) beta 及以上支持JUnit Platform 和JUnit Jupiter。有关
 
 ### 4.2. 构建支持（Build Support）
 
-#### 4.2.1. Gradle
+#### 4.2.1. Gradle{#Gradle}
 
 JUnit团队开发了一个非常基本的Gradle插件，它允许您运行测试引擎支持的任何类型的测试(例如，JUnit 3、JUnit 4、JUnit Jupiter、[Specsy](http://specsy.org/)等)。看到构建。junit5-gradle- consumer项目中的gradle，作为插件的一个例子。
 
@@ -1870,7 +1900,7 @@ Execution failed for task ':junitPlatformTest'.
 注意 | *当前限制的JUnit Gradle插件*
 注意 | 通过JUnit Gradle插件运行的任何测试的结果都不会包含在由Gradle生成的标准测试报告中;但是，测试结果通常可以聚合在CI服务器上。查看该插件的`reportsDir`属性。
 
-#### 4.2.2. Maven
+#### 4.2.2. Maven{#Maven}
 
 JUnit团队开发了一个非常基础的Maven  Surefire程序，它允许您通过`mvn test`运行JUnit 4和JUnit Jupiter测试。[`junit5- maven-consumer`](https://github.com/junit-team/junit5-samples/tree/r5.0.2/junit5-maven-consumer)项目的`pom.xml`文件展示了如何使用它，并作为mavne测试的起点。
 
@@ -2038,7 +2068,7 @@ JUnit Platform Surefire提供可以运行JUnit 4的测试，只要您配置了JU
 ...
 ```
 
-### 4.3. 控制台启动
+### 4.3. 控制台启动 {#ConsoleLauncher}
 
 [`ConsoleLauncher`](http://junit.org/junit5/docs/current/api/org/junit/platform/console/ConsoleLauncher.html)是一个命令行Java应用程序，它允许您从控制台启动JUnit Platform。例如，它可以用于运行`JUnit Vintage`和`JUnit Jupiter`测试，并将测试执行结果打印到控制台。
 
@@ -2156,7 +2186,7 @@ Option                                        Description
                                                 be repeated.
 ```
 
-### 4.4. 使用JUnit 4运行JUnit Platform
+### 4.4. 使用JUnit 4运行JUnit Platform{#UsingJUnit4ToRunTheJUnitPlatform}
 
 `JUnitPlatform` runner是一个基于JUnit 4的`runner`，它让你可以运行任何一个在JUnit 4环境中支持JUnit平台的编程模型的测试，比如，一个JUnit Jupiter 测试类。
 
@@ -2233,7 +2263,7 @@ public class JUnit4SuiteDemo {
 注意 | *额外的配置选项*
 对于发现和过滤测试，有更多的配置选项，而不仅仅是`@SelectPackages`。请参考[Javadoc](http://junit.org/junit5/docs/current/api/org/junit/platform/suite/api/package-summary.html)了解更多细节。
 
-### 4.5. 配置参数
+### 4.5. 配置参数{#ConfigurationParameters}
 
 除了指导测试类和测试引擎(包括扫描等)的平台之外，有时还需要提供特定于特定测试引擎的额外自定义配置参数。例如，JUnit Jupiter `TestEngine`支持以下用例的配置参数。
 
@@ -2249,7 +2279,7 @@ JUnit Platform 配置文件:一个名为`junit-platform.properties`的文件。�
 
 注意 | 配置参数按照上面定义的顺序查找。因此，直接提供给启动器的配置参数优先于通过系统属性和配置文件提供的配置参数。类似地，通过系统属性提供的配置参数优先于通过配置文件提供的配置参数。
 
-## 5. 扩展模式（Extension Model）
+## 5. 扩展模式（Extension Model）{#ExtensionModel}
 
 ### 5.1. 概述
 
@@ -2261,9 +2291,9 @@ JUnit Platform 配置文件:一个名为`junit-platform.properties`的文件。�
 
 5.2.1. 声明扩展注册
 
-开发人员可以注册一个或多个扩展注释声明的一个测试界面,测试类,测试方法,或自定义注释（ [composed annotation](http://junit.org/junit5/docs/current/user-guide/#writing-tests-meta-annotations)）与`@ExtendWith(…)`,提供扩展注册类引用。
+开发人员可以注册一个或多个扩展注解声明的一个测试界面,测试类,测试方法,或自定义注解（ [composed annotation](http://junit.org/junit5/docs/current/user-guide/#writing-tests-meta-annotations)）与`@ExtendWith(…)`,提供扩展注册类引用。
 
-例如，要为一个特定的测试方法注册一个自定义的`MockitoExtension`，您将对测试方法进行注释，如下所示。
+例如，要为一个特定的测试方法注册一个自定义的`MockitoExtension`，您将对测试方法进行注解，如下所示。
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -2273,7 +2303,7 @@ void mockTest() {
 }
 ```
 
-要在一个特定的类及其子类中为所有测试注册一个定制的`MockitoExtension`，您将对测试类进行注释，如下所示。
+要在一个特定的类及其子类中为所有测试注册一个定制的`MockitoExtension`，您将对测试类进行注解，如下所示。
 
 ```
 @ExtendWith(MockitoExtension.class)
@@ -2305,7 +2335,7 @@ class MyTestsV2 {
 
 #### 5.2.2. 自动扩展注册
 
-除了使用注释的声明扩展注册（[declarative extension registration](http://junit.org/junit5/docs/current/user-guide/#extensions-registration-declarative)）支持之外，JUnit Jupiter还通过Java的`java.util.ServiceLoader`机制支持全局扩展注册，允许第三方扩展根据类路径中可用的内容自动检测和注册。
+除了使用注解的声明扩展注册（[declarative extension registration](http://junit.org/junit5/docs/current/user-guide/#extensions-registration-declarative)）支持之外，JUnit Jupiter还通过Java的`java.util.ServiceLoader`机制支持全局扩展注册，允许第三方扩展根据类路径中可用的内容自动检测和注册。
 
 特别地,一个定制的扩展可以通过提供注册文件的完全限定类名`org.junit.jupiter.api.extension`命名。扩展到`/META-INF/services`文件夹内的封闭JAR文件。
 
@@ -2365,7 +2395,7 @@ org.example.MyCondition: 失活的条件，其FQCN完全是`org.example.MyCondit
 
 [`ParameterResolver`](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/extension/ParameterResolver.html)定义了用于动态解析运行时参数的`Extension` API。
 
-如果测试构造函数或`@Test`、`@TestFactory`、`@BeforeEach`、`@AfterEach`、`@BeforeAll`或`@AfterAll`方法接受一个参数，那么参数必须在运行时由一个`ParameterResolver`解析。`ParameterResolver`可以内置(见[`TestInfoParameterResolver`](https://github.com/junit-team/junit5/tree/r5.0.2/junit-jupiter-engine/src/main/java/org/junit/jupiter/engine/extension/TestInfoParameterResolver.java))或由用户注册。一般来说，可通过名称、类型、注释或其任何组合来解析参数。具体的例子,请参考源代码[`CustomTypeParameterResolver`](https://github.com/junit-team/junit5/tree/r5.0.2/junit-jupiter-engine/src/test/java/org/junit/jupiter/engine/execution/injection/sample/CustomTypeParameterResolver.java)和 [`CustomAnnotationParameterResolver`](https://github.com/junit-team/junit5/tree/r5.0.2/junit-jupiter-engine/src/test/java/org/junit/jupiter/engine/execution/injection/sample/CustomAnnotationParameterResolver.java)。
+如果测试构造函数或`@Test`、`@TestFactory`、`@BeforeEach`、`@AfterEach`、`@BeforeAll`或`@AfterAll`方法接受一个参数，那么参数必须在运行时由一个`ParameterResolver`解析。`ParameterResolver`可以内置(见[`TestInfoParameterResolver`](https://github.com/junit-team/junit5/tree/r5.0.2/junit-jupiter-engine/src/main/java/org/junit/jupiter/engine/extension/TestInfoParameterResolver.java))或由用户注册。一般来说，可通过名称、类型、注解或其任何组合来解析参数。具体的例子,请参考源代码[`CustomTypeParameterResolver`](https://github.com/junit-team/junit5/tree/r5.0.2/junit-jupiter-engine/src/test/java/org/junit/jupiter/engine/execution/injection/sample/CustomTypeParameterResolver.java)和 [`CustomAnnotationParameterResolver`](https://github.com/junit-team/junit5/tree/r5.0.2/junit-jupiter-engine/src/test/java/org/junit/jupiter/engine/execution/injection/sample/CustomAnnotationParameterResolver.java)。
 
 ### 5.6. 测试生命周期回调
 
@@ -2474,7 +2504,7 @@ public class IgnoreIOExceptionExtension implements TestExecutionExceptionHandler
 }
 ```
 
-### 5.8. 为测试模板提供调用上下文
+### 5.8. 为测试模板提供调用上下文{#ProvidingInvocationContextsForTestTemplates}
 
 [`@TestTemplate`](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/TestTemplate.html)方法时只能执行至少一个[`TestTemplateInvocationContextProvider`](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/extension/TestTemplateInvocationContextProvider.html) 注册。每一个这样的提供者都负责提供[`TestTemplateInvocationContext`](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/extension/TestTemplateInvocationContext.html)实例的`Stream` 。每个上下文可以指定一个自定义的显示名称和一个额外的扩展列表，这些扩展将只用于下一次调用[`@TestTemplate`](http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/TestTemplate.html)方法。
 
@@ -2544,7 +2574,7 @@ static class MyTestTemplateInvocationContextProvider implements TestTemplateInvo
 
 ### 5.10. 支持工具的扩展
 
-JUnit Platform共享工件暴露一个包 [`org.junit.platform.commons.support`](http://junit.org/junit5/docs/current/api/org/junit/platform/commons/support/package-summary.html) 包含维护实用程序方法来处理注释,反射和类路径扫描任务。我们鼓励`TestEngine`和`Extension` 测试者使用这些支持的方法来与JUnit Platform的行为保持一致。
+JUnit Platform共享工件暴露一个包 [`org.junit.platform.commons.support`](http://junit.org/junit5/docs/current/api/org/junit/platform/commons/support/package-summary.html) 包含维护实用程序方法来处理注解,反射和类路径扫描任务。我们鼓励`TestEngine`和`Extension` 测试者使用这些支持的方法来与JUnit Platform的行为保持一致。
 
 ### 5.11. 用户代码和扩展的相对执行顺序
 
@@ -2573,13 +2603,13 @@ JUnit Platform共享工件暴露一个包 [`org.junit.platform.commons.support`]
 | 11   | annotation `org.junit.jupiter.api.AfterAll` | user code executed after all tests of the container are executed |
 | 12   | interface `org.junit.jupiter.api.extension.AfterAllCallback` | extension code executed after all tests of the container are executed |
 
-在最简单的情况下，只执行实际的测试方法(步骤6);所有其他步骤都是可选的，这取决于用户代码的存在或相应的生命周期回调的扩展支持。有关各种生命周期回调的详细信息，请参阅各自的注释和扩展的JavaDoc。
+在最简单的情况下，只执行实际的测试方法(步骤6);所有其他步骤都是可选的，这取决于用户代码的存在或相应的生命周期回调的扩展支持。有关各种生命周期回调的详细信息，请参阅各自的注解和扩展的JavaDoc。
 
 ## 6. 从JUnit 4迁移
 
 虽然JUnit Jupiter编程模型和扩展模型并不支持JUnit 4的特性，比如`Rules` 和 `Runners` ，但是并不期望源代码维护人员需要更新他们现有的所有测试、测试扩展，以及定制的构建测试基础设施来迁移到JUnit Jupiter。
 
-相反，JUnit通过JUnit Vintage测试引擎提供了一个温和的迁移路径，它允许基于JUnit 3和JUnit 4的现有测试使用JUnit Platform基础设施来执行。因为JUnit Jupiter上的所有类和注释都位于新的 `org.junit.jupiter` 之下。在类路径中拥有JUnit 4和JUnit Jupiter的基础包不会导致任何冲突。因此，与JUnit Jupiter测试一起维护现有的JUnit 4测试是安全的。此外，由于JUnit团队将继续为JUnit 4.x基线提供维护和bug修复版本。开发人员有足够的时间按照他们自己的时间表迁移到JUnit Jupiter。
+相反，JUnit通过JUnit Vintage测试引擎提供了一个温和的迁移路径，它允许基于JUnit 3和JUnit 4的现有测试使用JUnit Platform基础设施来执行。因为JUnit Jupiter上的所有类和注解都位于新的 `org.junit.jupiter` 之下。在类路径中拥有JUnit 4和JUnit Jupiter的基础包不会导致任何冲突。因此，与JUnit Jupiter测试一起维护现有的JUnit 4测试是安全的。此外，由于JUnit团队将继续为JUnit 4.x基线提供维护和bug修复版本。开发人员有足够的时间按照他们自己的时间表迁移到JUnit Jupiter。
 
 ### 6.1. 在JUnit平台上运行JUnit 4测试
 
@@ -2619,9 +2649,9 @@ JUnit Platform共享工件暴露一个包 [`org.junit.platform.commons.support`]
 - `org.junit.rules.Verifier` (包括 `org.junit.rules.ErrorCollector`)
 - `org.junit.rules.ExpectedException`
 
-与JUnit 4一样，支持规则注释的字段和方法。通过在测试类上使用这些类级别的扩展，在遗留代码库中的 `Rule` 实现可以保持不变，包括JUnit 4规则导入语句。
+与JUnit 4一样，支持规则注解的字段和方法。通过在测试类上使用这些类级别的扩展，在遗留代码库中的 `Rule` 实现可以保持不变，包括JUnit 4规则导入语句。
 
-这种有限形式的 `Rule` 支持可以由类层次注释`org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport`启动。该注释是一个组合的注释，它支持所有迁移支持扩展: `VerifierSupport`、`ExternalResourceSupport`和`ExpectedExceptionSupport`。
+这种有限形式的 `Rule` 支持可以由类层次注解`org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport`启动。该注解是一个组合的注解，它支持所有迁移支持扩展: `VerifierSupport`、`ExternalResourceSupport`和`ExpectedExceptionSupport`。
 
 但是，如果您打算为JUnit 5开发一个新的扩展，请使用JUnit Jupiter的新扩展模型，而不是基于规则的JUnit 4模型。
 
@@ -2631,7 +2661,7 @@ JUnit Platform共享工件暴露一个包 [`org.junit.platform.commons.support`]
 
 ## 7. 高级主题
 
-### 7.1. JUnit Platform Launcher(启动器) API
+### 7.1. JUnit Platform Launcher(启动器) API{#JUnitPlatformLauncherAPI}
 
 JUnit 5的一个突出目标是使JUnit和它的编程客户机(构建工具和ide)之间的接口更加强大和稳定。其目的是将发现和执行测试的内部结构与外部所需的所有过滤和配置分离开来。
 
@@ -2707,7 +2737,7 @@ launcher.execute(request);
 
 execute()方法没有返回值，但是您可以很容易地使用侦听器将最终结果聚合到您自己的对象中。举个例子，看看 `SummaryGeneratingListener`。
 
-#### 7.1.3. 使用你自己的测试引擎
+#### 7.1.3. 使用你自己的测试引擎{#PluggingInYourOwnTestEngine}
 
 JUnit目前提供了两个TestEngine实现:
 
@@ -2738,7 +2768,7 @@ JUnit 5的主要目标之一是提高维护者的能力来改进JUnit，尽管�
 
 ### 8.1. API版本和状态
 
-每个已发布的产品都有一个版本号 `<major>.<minor>.<patch>`，所有公开可用的接口、类和方法都使用 [@API Guardian](https://github.com/apiguardian-team/apiguardian) 项目的 [@API](https://apiguardian-team.github.io/apiguardian/docs/current/api/) 进行注释。可以将注解的 `status`属性指定为以下值之一。
+每个已发布的产品都有一个版本号 `<major>.<minor>.<patch>`，所有公开可用的接口、类和方法都使用 [@API Guardian](https://github.com/apiguardian-team/apiguardian) 项目的 [@API](https://apiguardian-team.github.io/apiguardian/docs/current/api/) 进行注解。可以将注解的 `status`属性指定为以下值之一。
 
 | 状态(status)     | 描述                                       |
 | -------------- | ---------------------------------------- |
@@ -2750,7 +2780,7 @@ JUnit 5的主要目标之一是提高维护者的能力来改进JUnit，尽管�
 
 如果 `@API` 注解出现在类型上，那么它也被认为适用于该类型的所有公共成员。允许一个成员可以声明不同的 `status` 的低稳定性值。
 
-### 8.2. 实验性的api
+### 8.2. 实验性的api {#ExperimentalAPIs}
 
 下表列出了哪些api目前被指定为实验性的(通过 `@API(status = EXPERIMENTAL)` 指定)。在采用这些api时应该谨慎。
 
@@ -2791,7 +2821,7 @@ JUnit 5的主要目标之一是提高维护者的能力来改进JUnit，尽管�
 
 ### 8.3. @API 工具支持
 
- [@API Guardian](https://github.com/apiguardian-team/apiguardian) 项目计划为使用 [@API](https://apiguardian-team.github.io/apiguardian/docs/current/api/)注解的api的发布者和消费者提供工具支持。例如，工具支持可能提供一种方法来检查JUnit api是否按照 `@API` 注释声明使用。
+ [@API Guardian](https://github.com/apiguardian-team/apiguardian) 项目计划为使用 [@API](https://apiguardian-team.github.io/apiguardian/docs/current/api/)注解的api的发布者和消费者提供工具支持。例如，工具支持可能提供一种方法来检查JUnit api是否按照 `@API` 注解声明使用。
 
 ## 9. 贡献者
 
