@@ -16,9 +16,9 @@
 ### author: liushide 作者：刘士德
 
 ### 生成的书籍地址：
-gitbooks : [gitbooks junit5_cn_doc](https://liushide.gitbooks.io/junit5_cn_doc/content/)
+gitbooks : [gitbooks junit5_cn_doc](https://liushide.gitbooks.io/junit5_cn_doc/)
 
 Copyright &copy; 2017-2018, liushide 刘士德 (liushide@qq.com)
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+中文著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
 #### 如有问题请发邮件给我 liushide@qq.com
