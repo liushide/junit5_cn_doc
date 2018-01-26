@@ -8,12 +8,12 @@
 
 <h3 align="center"> JUnit 5.0.3 = Platform 1.0.3 + Jupiter 5.0.3 + Vintage 4.12.3 </h3>
 
-<h3 > 根据英文原版[JUnit 5 User Guide](http://junit.org/junit5/docs/current/user-guide/)的内容编写，适当加入了点自己的理解（可以让你更容易理解）  </h3>
+<h3 > 根据英文原版JUnit 5 User Guide的内容编写，适当加入了点自己的理解（可以让你更容易理解），如果觉得对你有帮助，请“star”下。  </h3>
 
 <h3 > 感谢英文版作者 Stefan Bechtold、Sam Brannen、Johannes Link、Matthias Merdes、Marc Philipp、Christian Stein 的辛劳付出  </h3>
 
-
 Copyright &copy; 2017-2018, liushide 刘士德 (liushide@qq.com)
+
 此文档的著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
 <h4> 如有问题请发邮件给我 liushide@qq.com </h4> 
@@ -32,11 +32,11 @@ Copyright &copy; 2017-2018, liushide 刘士德 (liushide@qq.com)
 ### 1.1. JUnit 5是什么？
 
 与以前的JUnit版本不同，JUnit 5是由三个不同子项目的几个不同的模块组成。  
-**JUnit 5 = JUnit Platform（平台） + JUnit Jupiter（朱庇特（主宰）、核心程序）） + JUnit Vintage（过时版本、老版本的支持）**
+**JUnit 5 = JUnit Platform（基础平台） + JUnit Jupiter（朱庇特（主宰）、核心程序） + JUnit Vintage（老版本的支持）**
 
-**JUnit Platform：**是在JVM上启动测试框架（[launching testing frameworks](http://junit.org/junit5/docs/current/user-guide/#launcher-api)）的基础。它还定义了用于开发平台上运行的测试框架的测试引擎（[`TestEngine`](http://junit.org/junit5/docs/current/api/org/junit/platform/engine/TestEngine.html)）API。此外，该平台还提供了一个控制台启动器（[Console Launcher](http://junit.org/junit5/docs/current/user-guide/#running-tests-console-launcher)），可以从命令行启动平台，并为 [Gradle](http://junit.org/junit5/docs/current/user-guide/#running-tests-build-gradle) 和 [Maven](http://junit.org/junit5/docs/current/user-guide/#running-tests-build-maven) 构建插件，以及一个基于JUnit 4的运行器（[JUnit 4 based Runner](http://junit.org/junit5/docs/current/user-guide/#running-tests-junit-platform-runner)），用于在平台上运行任何 `TestEngine` 。
+**JUnit Platform：**是在JVM上启动测试框架（[launching testing frameworks](#JUnitPlatformLauncherAPI)）的基础。它还定义了用于开发平台上运行的测试框架的测试引擎（[`TestEngine`](http://junit.org/junit5/docs/current/api/org/junit/platform/engine/TestEngine.html)）API。此外，该平台还提供了一个控制台启动器（[Console Launcher](#ConsoleLauncher)），可以从命令行启动平台，并为 [Gradle](http://junit.org/junit5/docs/current/user-guide/#running-tests-build-gradle) 和 [Maven](http://junit.org/junit5/docs/current/user-guide/#running-tests-build-maven) 构建插件，以及一个基于JUnit 4的运行器（[JUnit 4 based Runner](#UsingJUnit4ToRunTheJUnitPlatform)），用于在平台上运行任何 `TestEngine` 。
 
-**JUnit Jupiter：**是在JUnit 5中编写测试和扩展的新编程模型（ [programming model](http://junit.org/junit5/docs/current/user-guide/#writing-tests) ）和扩展模型（ [extension model](http://junit.org/junit5/docs/current/user-guide/#extensions) ）的组合。另外，Jupiter子项目还提供了一个`TestEngine`，用于在平台上运行基于Jupiter的测试。
+**JUnit Jupiter：**是在JUnit 5中编写测试和扩展的新编程模型（ [programming model](#writingTests) ）和扩展模型（ [extension model](#ExtensionModel) ）的组合。另外，Jupiter子项目还提供了一个`TestEngine`，用于在平台上运行基于Jupiter的测试。
 
 **JUnit Vintage：**提供了一个在平台上运行JUnit 3和JUnit 4的 `TestEngine` 。
 
