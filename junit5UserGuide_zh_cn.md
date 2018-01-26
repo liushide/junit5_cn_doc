@@ -16,7 +16,7 @@ Copyright &copy; 2017-2018, liushide 刘士德 (liushide@qq.com)
 
 此文档的著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
-<h4> 如有问题请发邮件给我 liushide@qq.com </h4> 
+<h4> 如有问题请发邮件给我 liushide@qq.com ,或者直接提 [issue](/issues) </h4> 
 
 
 
@@ -34,7 +34,7 @@ Copyright &copy; 2017-2018, liushide 刘士德 (liushide@qq.com)
 与以前的JUnit版本不同，JUnit 5是由三个不同子项目的几个不同的模块组成。  
 **JUnit 5 = JUnit Platform（基础平台） + JUnit Jupiter（朱庇特（主宰）、核心程序） + JUnit Vintage（老版本的支持）**
 
-**JUnit Platform：**是在JVM上启动测试框架（[launching testing frameworks](#JUnitPlatformLauncherAPI)）的基础。它还定义了用于开发平台上运行的测试框架的测试引擎（[`TestEngine`](http://junit.org/junit5/docs/current/api/org/junit/platform/engine/TestEngine.html)）API。此外，该平台还提供了一个控制台启动器（[Console Launcher](#ConsoleLauncher)），可以从命令行启动平台，并为 [Gradle](http://junit.org/junit5/docs/current/user-guide/#running-tests-build-gradle) 和 [Maven](http://junit.org/junit5/docs/current/user-guide/#running-tests-build-maven) 构建插件，以及一个基于JUnit 4的运行器（[JUnit 4 based Runner](#UsingJUnit4ToRunTheJUnitPlatform)），用于在平台上运行任何 `TestEngine` 。
+**JUnit Platform：**是在JVM上启动测试框架（[launching testing frameworks](#7.1.JUnitPlatformLauncherAPI)）的基础。它还定义了用于开发平台上运行的测试框架的测试引擎（[`TestEngine`](http://junit.org/junit5/docs/current/api/org/junit/platform/engine/TestEngine.html)）API。此外，该平台还提供了一个控制台启动器（[Console Launcher](#4.4.ConsoleLauncher)），可以从命令行启动平台，并为 [Gradle](http://junit.org/junit5/docs/current/user-guide/#running-tests-build-gradle) 和 [Maven](http://junit.org/junit5/docs/current/user-guide/#running-tests-build-maven) 构建插件，以及一个基于JUnit 4的运行器（[JUnit 4 based Runner](#UsingJUnit4ToRunTheJUnitPlatform)），用于在平台上运行任何 `TestEngine` 。
 
 **JUnit Jupiter：**是在JUnit 5中编写测试和扩展的新编程模型（ [programming model](#writingTests) ）和扩展模型（ [extension model](#ExtensionModel) ）的组合。另外，Jupiter子项目还提供了一个`TestEngine`，用于在平台上运行基于Jupiter的测试。
 
@@ -56,13 +56,13 @@ JUnit 5在运行时需要Java 8\(或更高版本\)。但是，您仍然可以用
 
 ### 2.1 依赖项的说明
 
-#### 2.1.1 JUnit Platform（平台）
+#### 2.1.1 JUnit Platform（基础平台）
 
 - **Group ID:**  `org.junit.platform`
 
 - **Version:**  `1.0.3`
 
-- **Artifact IDs: **
+- **Artifact IDs: ** 
 
   `junit-platform-commons`
 
@@ -2068,7 +2068,7 @@ JUnit Platform Surefire提供可以运行JUnit 4的测试，只要您配置了JU
 ...
 ```
 
-### 4.3. 控制台启动 {#ConsoleLauncher}
+### 4.3. 控制台启动 <span id="4.4.ConsoleLauncher"></span> 
 
 [`ConsoleLauncher`](http://junit.org/junit5/docs/current/api/org/junit/platform/console/ConsoleLauncher.html)是一个命令行Java应用程序，它允许您从控制台启动JUnit Platform。例如，它可以用于运行`JUnit Vintage`和`JUnit Jupiter`测试，并将测试执行结果打印到控制台。
 
@@ -2661,7 +2661,7 @@ JUnit Platform共享工件暴露一个包 [`org.junit.platform.commons.support`]
 
 ## 7. 高级主题
 
-### 7.1. JUnit Platform Launcher(启动器) API{#JUnitPlatformLauncherAPI}
+### 7.1. JUnit Platform Launcher(启动器) API <span id="7.1.JUnitPlatformLauncherAPI"> </span>
 
 JUnit 5的一个突出目标是使JUnit和它的编程客户机(构建工具和ide)之间的接口更加强大和稳定。其目的是将发现和执行测试的内部结构与外部所需的所有过滤和配置分离开来。
 
