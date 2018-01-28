@@ -9,6 +9,8 @@
 
 ### 根据英文原版JUnit 5 User Guide的内容编写，适当加入了点自己的理解（可以让你更容易理解），如果觉得对你有帮助，请“star”下。
 
+### Markdown的语法可能在git中有些不兼容的情况，请直接看 [html文档](junit5UserGuide_zh_cn.html) 或者查看 [pdf文档](junit5UserGuide_zh_cn.pdf) 
+
 
 
 JUnit5新加入的特性主要是对java8的良好支持、可以在测试方法中加入参数、吸收了一些TestNG的特性、友好
