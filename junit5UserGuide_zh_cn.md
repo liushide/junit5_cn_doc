@@ -11,7 +11,7 @@
 
 <h3 > 根据英文原版JUnit 5 User Guide的内容编写，适当加入了点自己的理解（可以让你更容易理解），如果觉得对你有帮助，请“star”下。  </h3>
 
-### Markdown的语法可能在git中有些不兼容的情况，请直接看 [html文档](junit5UserGuide_zh_cn.html) 或者查看 [pdf文档](junit5UserGuide_zh_cn.pdf) 
+### Markdown的语法可能在git中有些不兼容的情况，请直接下载 [pdf文档](junit5UserGuide_zh_cn.pdf) 进行查看 
 
 
 
@@ -27,7 +27,7 @@ Copyright &copy; 2017-2018, liushide 刘士德 (liushide@qq.com)
 
 此文档的著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
-#### 如有问题请发邮件给我 (liushide@qq.com) ,或者直接提  [issue](issues)  
+#### 如有问题请发邮件给我 (liushide@qq.com) ,或者直接提  [issue](/issues/new)  
 
 
 
